@@ -58,17 +58,7 @@ function ratesAverage(array) {
   return result / array.length;
 }
 
-/*
-{
-  "title":"The Shawshank Redemption",
-  "year":"1994",
-  "director":"Frank Darabont",
-  "duration":"2h 22min",
-  "genre":["Crime","Drama"],
-  "rate":"9.3"
-}
 
-*/
 // Get the average of Drama Movies
 /*
 Iteration 3: Drama movies
@@ -137,13 +127,41 @@ function orderByDuration(array) {
   return moviesByDuration;
 }
 
-/**
-  it('Should return the element in a single element array', function () {
-    expect(orderByDuration([{ duration: 100 }])).toEqual([{ duration: 100 }]);
-  });
- */
 // How many movies did STEVEN SPIELBERG
+function howManyMovies(array) {
+
+  // array is empty
+  if (array.length === 0) {
+    return undefined;
+  }
+  // get a list of SP drama movies
+  var DramaMoviesBySpielberg = array.filter(function (movie) {
+    isDrama = false;
+
+    movie.genre.forEach(function (tag) {
+      // check is movie is a drama
+      if (tag === 'Drama') {
+        isDrama = true;
+      }
+    });
+
+    // output movies matching the two conditions
+    return (movie.director === 'Steven Spielberg') && (isDrama === true);
+  });
+
+  // glue results
+  howManySP = 'Steven Spielberg directed ' + DramaMoviesBySpielberg.length + ' drama movies!';
+
+  return howManySP;
+}
 
 // Order by title and print the first 20 titles
+
+/*
+Another famous way to order the movies is to sort them alphabetically using the title key. 
+We only need to print the title of the first 20.
+Create a orderAlphabetically method, that receive an array and return an array of first 20 titles, alphabetically ordered. Return only the title of each movie,
+and if the array you receive have less than 20 movies, return all of them order
+*/
 
 // Best yearly rate average
