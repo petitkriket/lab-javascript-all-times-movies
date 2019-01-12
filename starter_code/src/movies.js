@@ -28,7 +28,7 @@ function turnHoursToMinutes(array) {
     var newDuration = hours * 60 + min;
 
     // creating new object to push into brother movies array
-    // ATTENTION objects use {} AND arrays [] ERREUR tmpMovieObject = [{}]
+    // COURSELINK objects use {} AND arrays [] ERREUR tmpMovieObject = [{}]
     // COMPARE
     //
     var tmpMovieObject = { // {[]}
@@ -108,7 +108,7 @@ function dramaMoviesRate(array) {
     return undefined;
   }
   // doing the average of dramas ratings minus the unrated ones
-  // ATTENTION use typeof to check number or string
+  // COURSELINK use typeof to check number or string
 
   // formating it to .00 result and turning it into number again
   // result / #dramas - unratedDramas
@@ -116,14 +116,32 @@ function dramaMoviesRate(array) {
   return Number(averageDramaMoviesRatings);
 }
 
-/*
-it('It should return the average of the array, float!', function () {
-    expect(dramaMoviesRate([{ genre: ['Drama'], rate: 9 }, { genre: ['Drama'], rate: 9 }, { genre: ['Drama'], rate: 7 }])).toBe(8.33);
-  });
-*/
-
 // Order by time duration, in growing order
+function orderByDuration(array) {
+  // IMO would be better by doing turnHoursToMinutes(array).sort() but testing wont allow it (?)
 
+  // if second item has a longer duration then move it
+  var moviesByDuration = array.sort(function (itemA, itemB) {
+    if (itemA.duration < itemB.duration) {
+      return -1;
+    }
+    // if items are the same duration and second item title is lexically before then move it
+    if (itemA.duration === itemB.duration && (itemA.title.charAt(0) < itemB.title.charAt(0))) {
+      return -1;
+    }
+
+    return 1;
+  });
+
+  // return the sorted array enclosed into  moviesByDuration above
+  return moviesByDuration;
+}
+
+/**
+  it('Should return the element in a single element array', function () {
+    expect(orderByDuration([{ duration: 100 }])).toEqual([{ duration: 100 }]);
+  });
+ */
 // How many movies did STEVEN SPIELBERG
 
 // Order by title and print the first 20 titles
