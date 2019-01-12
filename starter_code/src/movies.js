@@ -164,4 +164,46 @@ Create a orderAlphabetically method, that receive an array and return an array o
 and if the array you receive have less than 20 movies, return all of them order
 */
 
+function orderAlphabetically(array) {
+
+  // map titles into an array of object titles
+  var moviesTitles = array.map(function (movie) {
+
+    // remove prepending digits, whitespaces and special characteres
+    var tmpMovieObject = {
+      title: movie.title.replace(/\d+([^abc])./g, '').trim()
+    };
+    return tmpMovieObject;
+  });
+
+  // sort strings by first character
+  moviesTitles.sort(function (titleA, titleB) {
+    if (titleA.title.charAt(0) < titleB.title.charAt(0)) {
+      return -1;
+    }
+    return 1;
+  });
+
+  // putting them into an array
+  titleArray = [];
+  moviesTitles.forEach(function (item) {
+    titleArray.push(item.title);
+  });
+
+  if (titleArray.length < 20) {
+    return titleArray.sort();
+  }
+  return titleArray.splice(0, 20).sort();
+}
+
+
+/*
+Let's complicated a bit this thing. 
+We always listen to classic movies,
+ but we want to know, which year has the best average rate, so we can declare officially the BEST YEAR FOR CINEMA!
+
+Go ahead and find which year have the best average rate
+ for the movies that were released on that year!
+ */
+
 // Best yearly rate average
