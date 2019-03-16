@@ -14,7 +14,6 @@ Use map, reduce, filter and sort to manipulate arrays
 function turnHoursToMinutes(array) {
   var updatedMovies = [];
   var formatedTime = array.map(function (movie) {
-
     // taking 1st char, remove 1st char from rest and glue
     var hours = Number(movie.duration.slice(0, movie.duration.indexOf('h')));
     var min = Number(movie.duration.slice(2, movie.duration.indexOf('m')));
@@ -31,7 +30,8 @@ function turnHoursToMinutes(array) {
     // COURSELINK objects use {} AND arrays [] ERREUR tmpMovieObject = [{}]
     // COMPARE
     //
-    var tmpMovieObject = { // {[]}
+    var tmpMovieObject = {
+      // {[]}
       title: movie.title,
       year: movie.year,
       director: movie.director,
@@ -49,7 +49,6 @@ function turnHoursToMinutes(array) {
   return updatedMovies;
 }
 
-
 // Get the average of all rates with 2 decimals
 function ratesAverage(array) {
   var result = array.reduce(function (sum, movie) {
@@ -57,7 +56,6 @@ function ratesAverage(array) {
   }, 0);
   return result / array.length;
 }
-
 
 // Get the average of Drama Movies
 /*
@@ -70,7 +68,7 @@ function dramaMoviesRate(array) {
   var numberOfDramasMovies = 0;
   // adding all dramas ratings and divising the result by number of dramas
   var sumOfDramasRatings = array.reduce(function (sum, movie) {
-    if (array === undefined || array.length === 0) {
+    if (array.length === 0) {
       return undefined;
     }
 
@@ -78,7 +76,11 @@ function dramaMoviesRate(array) {
     movie.genre.forEach(function (tag) {
       if (tag === 'Drama') {
         // set unrated movies rate to 0
-        if (movie.rate === undefined || movie.rate === null || movie.rate === '') {
+        if (
+          movie.rate === undefined ||
+          movie.rate === null ||
+          movie.rate === ''
+        ) {
           unratedDramaMovies++;
           movie.rate = 0;
         }
@@ -102,7 +104,9 @@ function dramaMoviesRate(array) {
 
   // formating it to .00 result and turning it into number again
   // result / #dramas - unratedDramas
-  var averageDramaMoviesRatings = (sumOfDramasRatings / numberOfDramasMovies).toFixed(2);
+  var averageDramaMoviesRatings = (
+    sumOfDramasRatings / numberOfDramasMovies
+  ).toFixed(2);
   return Number(averageDramaMoviesRatings);
 }
 
@@ -116,7 +120,10 @@ function orderByDuration(array) {
       return -1;
     }
     // if items are the same duration and second item title is lexically before then move it
-    if (itemA.duration === itemB.duration && (itemA.title.charAt(0) < itemB.title.charAt(0))) {
+    if (
+      itemA.duration === itemB.duration &&
+      itemA.title.charAt(0) < itemB.title.charAt(0)
+    ) {
       return -1;
     }
 
@@ -129,7 +136,6 @@ function orderByDuration(array) {
 
 // How many movies did STEVEN SPIELBERG
 function howManyMovies(array) {
-
   // array is empty
   if (array.length === 0) {
     return undefined;
@@ -146,29 +152,21 @@ function howManyMovies(array) {
     });
 
     // output movies matching the two conditions
-    return (movie.director === 'Steven Spielberg') && (isDrama === true);
+    return movie.director === 'Steven Spielberg' && isDrama === true;
   });
 
   // glue results
-  howManySP = 'Steven Spielberg directed ' + DramaMoviesBySpielberg.length + ' drama movies!';
+  howManySP = 'Steven Spielberg directed ' +
+    DramaMoviesBySpielberg.length +
+    ' drama movies!';
 
   return howManySP;
 }
 
 // Order by title and print the first 20 titles
-
-/*
-Another famous way to order the movies is to sort them alphabetically using the title key. 
-We only need to print the title of the first 20.
-Create a orderAlphabetically method, that receive an array and return an array of first 20 titles, alphabetically ordered. Return only the title of each movie,
-and if the array you receive have less than 20 movies, return all of them order
-*/
-
 function orderAlphabetically(array) {
-
   // map titles into an array of object titles
   var moviesTitles = array.map(function (movie) {
-
     // remove prepending digits, whitespaces and special characteres
     var tmpMovieObject = {
       title: movie.title.replace(/\d+([^abc])./g, '').trim()
@@ -190,20 +188,91 @@ function orderAlphabetically(array) {
     titleArray.push(item.title);
   });
 
+  // sort output every movies if less than 20
   if (titleArray.length < 20) {
     return titleArray.sort();
   }
+  // output sorted shortlist
   return titleArray.splice(0, 20).sort();
 }
+// Best yearly rate average
+function bestYearAvg(array) {
+  if (array.length === 0) {
+    return undefined;
+  }
 
+  // turn rates to # and map to obj.year obj.rate
+  onlyRateAndYear = array.map(function (movie) {
+    var outputObj = {
+      year: movie.year,
+      rate: Number(movie.rate)
+    };
+
+    return outputObj;
+  });
+
+  // get a list of all the movies years
+  yearsList = onlyRateAndYear.map(function (movie) {
+    return movie.year;
+  });
+
+  // removing duplicates // QUESTION > CLARIFY https://stackoverflow.com/questions/840781/get-all-non-unique-values-i-e-duplicate-more-than-one-occurrence-in-an-array
+  var transitionalArray = yearsList.slice().sort();
+  var uniqueYearList = [];
+  for (var i = 0; i < transitionalArray.length - 1; i++) {
+    if (transitionalArray[i + 1] === transitionalArray[i]) {
+      uniqueYearList.push(transitionalArray[i]);
+    }
+  }
+
+  // creating array structure for ratings nested in years
+  var sortedRatings = [{
+    year: '',
+    ratings: ['']
+  }];
+
+  // set parent unique years in this array
+  onlyRateAndYear.forEach(function (item, index) {
+    if (sortedRatings === undefined) {
+      console.log('not defined..');
+    } else {
+      // assign r
+      sortedRatings[index].year = [item.year];
+    }
+  });
+  console.log(sortedRatings);
+  console.log('result');
+
+  var result = onlyRateAndYear.map(function (item) {
+    // finding the index to push the rating to
+    var indexDestination = 0;
+
+    sortedRating.forEach(function (year) { //  forEach doest have a return
+      indexDestination = year.indexOf(item.year);
+    });
+
+    // refactor using findIndex MDN https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex 
+    return sortedRatings[indexDestination].ratings;
+  });
+
+  //  var averageYearRatings = Number(onlyRateAndYear) / Number(array.length);
+  return 'The best year was X with an average rate of Y';
+}
 
 /*
-Let's complicated a bit this thing. 
-We always listen to classic movies,
- but we want to know, which year has the best average rate, so we can declare officially the BEST YEAR FOR CINEMA!
+  it('Should return the correct answer to a single element array', function () {
+    expect(bestYearAvg([{ year: '2007', rate: 8 }])).toEqual('The best year was 2007 with an average rate of 8');
+  });
 
-Go ahead and find which year have the best average rate
- for the movies that were released on that year!
- */
+  it('Should return the correct answer to a multiple elements array', function () {
+    expect(bestYearAvg(movies)).toEqual('The best year was 1972 with an average rate of 9.2');
+  });
 
-// Best yearly rate average
+  it('Should return the oldest year when there is a tie', function () {
+    var newMoviesArr = [{ year: '2000', rate: 9 }, { year: '2000', rate: 8 }, { year: '1978', rate: 10 }, { year: '1978', rate: 7 }];
+
+    expect(bestYearAvg(newMoviesArr)).toEqual('The best year was 1978 with an average rate of 8.5');
+  });
+});
+*/
+// COURSELINK look _GroupBy Lodash for array manipulation https://stackoverflow.com/a/40775082/3468846
